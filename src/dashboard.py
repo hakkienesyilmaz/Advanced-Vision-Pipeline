@@ -1,5 +1,5 @@
 """
-Dashboard Compositor for Antigravity AI Vision System.
+Dashboard Compositor for Advanced Vision Pipeline.
 Combines Object Detection, MiDaS Depth Estimation, and Technical Console into a unified 3-panel HUD.
 """
 
@@ -113,14 +113,14 @@ class DashboardCompositor:
         cv2.rectangle(canvas, (0, 0), (self.canvas_w, self.header_h), (18, 22, 28), -1)
         cv2.line(canvas, (0, self.header_h), (self.canvas_w, self.header_h), (50, 60, 75), 1)
 
-        # Glowing Antigravity AI logo icon
+        # Glowing status logo icon
         cv2.circle(canvas, (24, self.header_h // 2), 7, self.accent_cyan, -1)
         cv2.circle(canvas, (24, self.header_h // 2), 3, (255, 255, 255), -1)
 
         # Title
         cv2.putText(
             canvas,
-            "Antigravity AI",
+            "Advanced Vision",
             (40, 24),
             cv2.FONT_HERSHEY_SIMPLEX,
             0.65,
@@ -132,7 +132,7 @@ class DashboardCompositor:
         # Subtitle badge
         cv2.putText(
             canvas,
-            "LABORATORY TELEMETRY SYSTEM v2.6",
+            "REAL-TIME TELEMETRY SYSTEM v1.0",
             (190, 24),
             cv2.FONT_HERSHEY_SIMPLEX,
             0.40,

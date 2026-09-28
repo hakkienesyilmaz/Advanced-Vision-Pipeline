@@ -1,1 +1,1 @@
-"""Test package for Antigravity AI Vision."""
+"""Test package for Advanced Vision Pipeline."""

@@ -80,7 +80,7 @@ class VideoStreamHandler:
     def _generate_synthetic_frame(self) -> np.ndarray:
         """
         Synthesizes a realistic laboratory workbench scene with dynamic moving elements
-        (calibration target, power supply, robotic arm, antigravity prototype).
+        (calibration target, power supply, robotic arm, sensor core prototype).
         Allows testing without webcam or video files.
         """
         h, w = 480, 640
@@ -123,7 +123,7 @@ class VideoStreamHandler:
         cv2.circle(img, (230, 295), 10, (30, 30, 35), -1)
         cv2.circle(img, (230, 340), 10, (30, 30, 35), -1)
 
-        # 4. Antigravity Core Prototype (Glows with sinusoidal pulse)
+        # 4. Optical Sensor Core Prototype (Glows with sinusoidal pulse)
         pulse = 0.5 + 0.5 * np.sin(t * 3.0)
         core_x = int(450 + 20 * np.sin(t * 0.8))
         core_y = 330

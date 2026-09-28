@@ -1,5 +1,5 @@
 """
-Unit and Integration Tests for Antigravity AI Vision Pipeline.
+Unit and Integration Tests for Advanced Vision Pipeline.
 Tests ObjectDetector, DepthEstimator, Sensor Fusion, and Dashboard Compositor.
 """
 
@@ -18,7 +18,7 @@ from src.telemetry import SystemTelemetry
 from src.utils import VideoStreamHandler
 
 
-class TestAntigravityVisionPipeline(unittest.TestCase):
+class TestVisionPipeline(unittest.TestCase):
     """Test suite ensuring all pipeline subsystems run smoothly without failure."""
 
     @classmethod

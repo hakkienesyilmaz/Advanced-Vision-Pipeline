@@ -1,5 +1,5 @@
 """
-Antigravity AI - Real-Time Multi-Modal Vision & Depth Telemetry Dashboard
+Advanced Vision Pipeline - Real-Time Multi-Modal Vision & Depth Telemetry Dashboard
 Main application entry point.
 
 Usage:
@@ -27,7 +27,7 @@ from src.utils import VideoStreamHandler
 
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Antigravity AI: Real-Time Multi-Modal Vision & Depth Telemetry Dashboard"
+        description="Advanced Vision Pipeline: Real-Time Multi-Modal Vision & Depth Telemetry Dashboard"
     )
     parser.add_argument(
         "--source",
@@ -100,7 +100,7 @@ def parse_arguments() -> argparse.Namespace:
 
 def run_pipeline(args: argparse.Namespace) -> None:
     print("=" * 70)
-    print("  ANTIGRAVITY AI - MULTI-MODAL COMPUTER VISION & TELEMETRY SYSTEM")
+    print("  ADVANCED VISION PIPELINE - REAL-TIME SPATIAL VISION & TELEMETRY")
     print("=" * 70)
 
     # 1. Initialize Subsystems
@@ -215,7 +215,7 @@ def run_pipeline(args: argparse.Namespace) -> None:
                 video_writer.write(dashboard_canvas)
 
             if not args.no_display:
-                cv2.imshow("Antigravity AI - Real-Time Analysis Dashboard", dashboard_canvas)
+                cv2.imshow("Advanced Vision Pipeline - Real-Time Analysis Dashboard", dashboard_canvas)
                 key = cv2.waitKey(1) & 0xFF
                 if key == ord("q") or key == 27:  # 'q' or ESC
                     telemetry.add_log("[INFO] User requested termination.")
