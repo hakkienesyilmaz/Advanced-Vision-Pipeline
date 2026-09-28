@@ -1,4 +1,4 @@
-# Antigravity AI: Real-Time Multi-Modal Vision & Depth Telemetry Dashboard
+# Advanced-Vision-Pipeline: Real-Time Multi-Modal Vision & Depth Telemetry Dashboard
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.x-orange.svg)](https://pytorch.org/)
@@ -7,7 +7,7 @@
 [![MiDaS](https://img.shields.io/badge/Intel-MiDaS%20Depth-blueviolet.svg)](https://github.com/isl-org/MiDaS)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **Antigravity AI** is an end-to-end, multi-modal Computer Vision system engineered for real-time spatial awareness in robotic laboratory environments. It synchronizes **Instance Segmentation (YOLOv8)**, **Monocular Relative Depth Estimation (Intel MiDaS)**, and a high-performance **HUD Telemetry Dashboard** into an integrated real-time pipeline.
+> **Advanced-Vision-Pipeline** is an end-to-end, multi-modal Computer Vision system engineered for real-time spatial awareness in robotic laboratory environments. It synchronizes **Instance Segmentation (YOLOv8)**, **Monocular Relative Depth Estimation (Intel MiDaS)**, and a high-performance **HUD Telemetry Dashboard** into an integrated real-time pipeline.
 
 ---
 
@@ -87,8 +87,8 @@ Benchmarked across 100 consecutive frames on a standard CPU workstation (Intel/A
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/<your-username>/antigravity-vision-dashboard.git
-cd antigravity-vision-dashboard
+git clone https://github.com/<your-username>/Advanced-Vision-Pipeline.git
+cd Advanced-Vision-Pipeline
 ```
 
 ### 2. Set Up Virtual Environment (Recommended)
