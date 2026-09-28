@@ -5,7 +5,6 @@
 [![YOLOv8](https://img.shields.io/badge/Ultralytics-YOLOv8-00FFFF.svg)](https://docs.ultralytics.com/)
 [![OpenCV](https://img.shields.io/badge/OpenCV-4.x-green.svg)](https://opencv.org/)
 [![MiDaS](https://img.shields.io/badge/Intel-MiDaS%20Depth-blueviolet.svg)](https://github.com/isl-org/MiDaS)
-[![Lisans: MIT](https://img.shields.io/badge/Lisans-MIT-yellow.svg)](LICENSE)
 
 > **Advanced-Vision-Pipeline**, otonom robotik ve laboratuvar ortamlarında uzamsal farkındalık (spatial awareness) sağlamak üzere tasarlanmış uçtan uca **Çok Modlu (Multi-Modal) bir Bilgisayarlı Görü ve Telemetri Sistemidir**. Tek bir standart RGB kamera akışı üzerinden **YOLOv8 Örnek Segmentasyonu (Instance Segmentation)** ile **Intel MiDaS Monoküler Derinlik Tahminini** eşzamanlı çalıştırarak nesneleri tespit eder, mesafelerini sınıflandırır ve gerçek zamanlı bir HUD arayüzünde sunar.
 
@@ -186,12 +185,5 @@ Advanced-Vision-Pipeline/
 ├── main.py                           # CLI uygulaması ana giriş noktası
 ├── requirements.txt                  # Python kütüphane bağımlılıkları
 ├── .gitignore                        # Git dışlama kuralları
-├── LICENSE                           # MIT Açık Kaynak Lisansı
 └── README.md                         # Proje dokümantasyonu
 ```
-
----
-
-## 📄 Lisans
-
-Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
