@@ -192,18 +192,6 @@ Advanced-Vision-Pipeline/
 
 ---
 
-## 💼 CV ve LinkedIn İçin Proje Açıklama Maddeleri
-
-Aşağıdaki maddeleri özgeçmişinizin **Projeler (Projects)** veya **İş Deneyimi** alanına doğrudan ekleyebilirsiniz:
-
-* **Bilgisayarlı Görü Mühendisi | Advanced-Vision-Pipeline**
-  * *Python ve PyTorch kullanarak YOLOv8 örnek segmentasyonu (instance segmentation) ile Intel MiDaS monoküler derinlik tahminini eşzamanlı çalıştıran çok modlu bir bilgisayarlı görü boru hattı geliştirdim.*
-  * *Tespit edilen nesnelerin segmentasyon maskeleri üzerinden medyan derinlik değerlerini filtreleyen 2B-3B uzamsal füzyon katmanı kodlayarak nesnelerin mesafesini (`Near/Mid/Far`) milisaniye seviyesinde sınıflandırdım.*
-  * *OpenCV tabanlı, anlık FPS, model bazlı çıkarım gecikmeleri ve donanım kaynaklarını (CPU/RAM/GPU) izleyen 1280x720 çözünürlüğünde 3 panelli bir gerçek zamanlı telemetri HUD paneli tasarladım.*
-  * *Kapsamlı test otomasyonu ve sentetik test verisi simülatörü geliştirerek sistemin CPU üzerinde ~7 FPS, GPU üzerinde ~28 FPS kararlı çıkarım yapmasını sağladım.*
-
----
-
 ## 📄 Lisans
 
 Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
