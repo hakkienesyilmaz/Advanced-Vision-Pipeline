@@ -1,156 +1,159 @@
-# Advanced-Vision-Pipeline: Real-Time Multi-Modal Vision & Depth Telemetry Dashboard
+# Advanced-Vision-Pipeline: Gerçek Zamanlı Çok Modlu Bilgisayarlı Görü ve Derinlik Telemetrisi Sistemi
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.x-orange.svg)](https://pytorch.org/)
 [![YOLOv8](https://img.shields.io/badge/Ultralytics-YOLOv8-00FFFF.svg)](https://docs.ultralytics.com/)
 [![OpenCV](https://img.shields.io/badge/OpenCV-4.x-green.svg)](https://opencv.org/)
 [![MiDaS](https://img.shields.io/badge/Intel-MiDaS%20Depth-blueviolet.svg)](https://github.com/isl-org/MiDaS)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Lisans: MIT](https://img.shields.io/badge/Lisans-MIT-yellow.svg)](LICENSE)
 
-> **Advanced-Vision-Pipeline** is an end-to-end, multi-modal Computer Vision system engineered for real-time spatial awareness in robotic laboratory environments. It synchronizes **Instance Segmentation (YOLOv8)**, **Monocular Relative Depth Estimation (Intel MiDaS)**, and a high-performance **HUD Telemetry Dashboard** into an integrated real-time pipeline.
-
----
-
-## ⚡ Key Architectural Features
-
-1. **Object Detection & Instance Segmentation (Left Panel):**
-   * Powered by **YOLOv8-Seg** with sub-20ms inference latency.
-   * Extracts precise polygon segmentation masks, bounding boxes, class labels, centroids, and confidence scores.
-   * Supports lab bench components (robotic manipulators, calibration targets, power units, prototypes).
-
-2. **Monocular Relative Depth Estimation (Right Panel):**
-   * Uses **Intel MiDaS (Small)** via PyTorch Hub to derive continuous dense depth maps from standard RGB camera streams without requiring stereo hardware or LiDAR.
-   * Produces normalized relative disparity maps (closer objects appear brighter, distant elements darker).
-
-3. **Spatial Sensor Fusion (Object ↔ Depth Association):**
-   * Dynamically samples median depth within the segmentation mask or bounding box of each detected entity.
-   * Classifies object proximity into categorized spatial zones (`Near`, `Mid`, `Far`) with continuous distance coefficients.
-
-4. **Technical Console & Hardware Telemetry (Lower Panel):**
-   * High-contrast cyberpunk laboratory HUD rendered natively in OpenCV.
-   * Real-time metrics: FPS throughput, per-model latency breakdown (YOLO ms vs MiDaS ms), CPU utilization, system RAM, and GPU VRAM telemetry.
-   * Live scrolling terminal log with timestamped event logging.
-
-5. **Universal Video Stream Abstraction:**
-   * Seamlessly runs across live webcams (`--source 0`), video files (`--source data/demo_lab_video.mp4`), static images (`--source data/lab_bench_sample.jpg`), or an offline **synthetic physics-based lab simulation** (`--source demo`).
+> **Advanced-Vision-Pipeline**, otonom robotik ve laboratuvar ortamlarında uzamsal farkındalık (spatial awareness) sağlamak üzere tasarlanmış uçtan uca **Çok Modlu (Multi-Modal) bir Bilgisayarlı Görü ve Telemetri Sistemidir**. Tek bir standart RGB kamera akışı üzerinden **YOLOv8 Örnek Segmentasyonu (Instance Segmentation)** ile **Intel MiDaS Monoküler Derinlik Tahminini** eşzamanlı çalıştırarak nesneleri tespit eder, mesafelerini sınıflandırır ve gerçek zamanlı bir HUD arayüzünde sunar.
 
 ---
 
-## 🏗️ System Architecture Pipeline
+## ⚡ Temel Mimari Özellikleri
+
+1. **Nesne Tespiti ve Örnek Segmentasyonu (Sol Panel):**
+   * **YOLOv8-Seg** mimarisi kullanılarak nesnelerin konumları (bounding box), poligon segmentasyon maskeleri, güven skorları ve merkez noktaları (centroid) milisaniye seviyesinde tespit edilir.
+   * Laboratuvar ekipmanları, robotik aksamlar ve çalışma alanı nesneleri için optimize edilmiştir.
+
+2. **Monoküler Bağıl Derinlik Kestirimi (Sağ Panel):**
+   * Stereo kamera veya LiDAR gibi pahalı donanımlara ihtiyaç duymadan, tek bir standart kameradan **Intel MiDaS** modeliyle piksel düzeyinde bağıl derinlik haritası üretir.
+   * Kameraya yakın nesneler parlak beyaz, uzak arka plan ise koyu tonlarda kodlanır.
+
+3. **Uzamsal Sensör Füzyonu (2B'den 3B'ye Eşleme):**
+   * Tespit edilen nesnelerin kapladığı piksel maskesi içerisindeki medyan derinlik değeri anlık olarak hesaplanır.
+   * Nesnelere dinamik mesafe etiketleri atanır:
+     * `Near (< 0.8m)`: Tutma/müdahale mesafesinde
+     * `Mid (1.5m)`: Orta menzil
+     * `Far (> 3.0m)`: Uzak menzil
+
+4. **Gerçek Zamanlı Telemetri ve 3 Panelli Laboratuvar HUD Konsolu (Alt Panel):**
+   * OpenCV ile çizilen 1280x720 yüksek çözünürlüklü gösterge paneli.
+   * Anlık FPS, model bazlı çıkarım gecikmeleri (YOLO ms ve MiDaS ms), CPU/RAM yükü ve kayan Python terminal loglarını canlı olarak gösterir.
+
+5. **Evrensel Video Akış Yöneticisi:**
+   * Canlı web kamerası (`--source 0`), video dosyaları (`--source data/demo_lab_video.mp4`), durağan fotoğraflar veya harici kamera gerektirmeyen **dahili sentetik laboratuvar simülatörü** (`--source demo`) ile çalışabilir.
+
+---
+
+## 🏗️ Sistem Mimarisi ve Veri Akışı
 
 ```mermaid
 flowchart LR
-    A[RGB Video / Camera Stream] --> B[Frame Dispatcher]
+    A[RGB Kamera / Video Akışı] --> B[Kare Dağıtım Yöneticisi]
     
-    subgraph Parallel AI Pipelines
-        B --> C[YOLOv8 Segmentation Engine]
-        B --> D[MiDaS Monocular Depth Model]
+    subgraph Paralel Yapay Zeka Modelleri
+        B --> C[YOLOv8 Segmentasyon Motoru]
+        B --> D[MiDaS Monoküler Derinlik Modeli]
     end
     
-    C -->|BBoxes & Masks| E[Spatial Depth Fusion]
-    D -->|Relative Depth Map| E
+    C -->|Sınır Kutuları & Maskeler| E[Uzamsal Derinlik Füzyonu]
+    D -->|Bağıl Derinlik Haritası| E
     
-    E --> F[Dashboard HUD Compositor]
-    G[System Telemetry: FPS, CPU, RAM, Latencies] --> F
+    E --> F[HUD Konsol Birleştirici]
+    G[Sistem Telemetrisi: FPS, CPU, RAM, Gecikme] --> F
     
-    F --> H[Live 3-Panel Display 1280x720]
-    F --> I[MP4 Recording / Telemetry Logs]
+    F --> H[1280x720 Canlı 3 Panelli Ekran]
+    F --> I[MP4 Video Kaydı / Telemetri Raporu]
 ```
 
 ---
 
-## 📊 Benchmark & Performance Profile
+## 📊 Performans ve Benchmark Sonuçları
 
-Benchmarked across 100 consecutive frames on a standard CPU workstation (Intel/AMD x64) and GPU acceleration (NVIDIA Tesla T4 / RTX Series):
+100 ardışık kare üzerinden standart bir CPU iş istasyonu ve GPU hızlandırma ortamında elde edilen performans değerleri:
 
-| Processing Stage | CPU (SIMD Optimized) | GPU (CUDA / TensorRT) | Resolution |
+| İşlem Aşaması | CPU (SIMD Optimize) | GPU (CUDA / TensorRT) | Giriş Çözünürlüğü |
 | :--- | :---: | :---: | :---: |
-| **YOLOv8n-Seg (Detection & Mask)** | ~55 - 65 ms | ~12 - 16 ms | 640 x 480 |
-| **MiDaS Small (Depth Estimation)** | ~85 - 95 ms | ~20 - 24 ms | 384 x 384 |
-| **Spatial Fusion & Mask Sampling** | ~1.5 ms | ~0.8 ms | Real-time |
-| **HUD Composition & Rendering** | ~2.5 ms | ~1.8 ms | 1280 x 720 |
-| **Total End-to-End Latency** | **~145 - 160 ms** | **~35 - 42 ms** | **HD Output** |
-| **Effective Throughput** | **~6.5 - 7.5 FPS** | **~24.0 - 28.5 FPS** | **Real-time** |
+| **YOLOv8n-Seg (Tespit & Maske)** | ~55 - 65 ms | ~12 - 16 ms | 640 x 480 |
+| **MiDaS Small (Derinlik Tahmini)** | ~85 - 95 ms | ~20 - 24 ms | 384 x 384 |
+| **Uzamsal Füzyon & Maske Örnekleme** | ~1.5 ms | ~0.8 ms | Gerçek Zamanlı |
+| **HUD Çizimi & Birleştirme** | ~2.5 ms | ~1.8 ms | 1280 x 720 |
+| **Toplam Uçtan Uca Gecikme** | **~145 - 160 ms** | **~35 - 42 ms** | **HD Çıktı** |
+| **Efektif Akış Hızı** | **~6.5 - 7.5 FPS** | **~24.0 - 28.5 FPS** | **Canlı Akış** |
 
 ---
 
-## 🚀 Quick Start & Installation
+## 🚀 Kurulum
 
-### 1. Clone the Repository
+### 1. Depoyu Klonlayın
 ```bash
-git clone https://github.com/<your-username>/Advanced-Vision-Pipeline.git
+git clone https://github.com/hakkienesyilmaz/Advanced-Vision-Pipeline.git
 cd Advanced-Vision-Pipeline
 ```
 
-### 2. Set Up Virtual Environment (Recommended)
+### 2. Sanal Ortam Oluşturun (Önerilen)
 ```bash
 python -m venv venv
-# On Windows:
+# Windows için:
 .\venv\Scripts\activate
-# On Linux / macOS:
+# Linux / macOS için:
 source venv/bin/activate
 ```
 
-### 3. Install Dependencies
+### 3. Bağımlılıkları Yükleyin
 ```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## 💻 Usage Guide
+## 💻 Kullanım Kılavuzu
 
-### 1. Run with Built-in Synthetic Lab Simulation (No Webcam Needed!)
-Test the full pipeline instantly without any connected hardware:
+### 1. Dahili Sentetik Laboratuvar Simülasyonu (Kamera Gerektirmez)
+Donanım veya kamera bağlantısı olmadan tüm boru hattını doğrudan test edin:
 ```bash
 python main.py --source demo
 ```
 
-### 2. Run with Live Connected Webcam
+### 2. Bağlı Web Kamerası İle Canlı Başlatma
 ```bash
 python main.py --source 0
 ```
 
-### 3. Run with Sample Video File & Save Recording
+### 3. Test Videosu Üretme ve Çıktıyı MP4 Olarak Kaydetme
 ```bash
-# Generate sample test video:
+# 10 saniyelik sentetik laboratuvar test videosu üretir:
 python data/sample_generator.py
 
-# Run pipeline and export composite output video:
-python main.py --source data/demo_lab_video.mp4 --save output/lab_run.mp4
+# Videoyu işler ve birleştirilmiş HUD çıktısını kaydeder:
+python main.py --source data/demo_lab_video.mp4 --save output/kayit.mp4
 ```
 
-### 4. Run Automated Benchmark Mode
-Runs automated latency percentiles and hardware profiling:
+### 4. Otomatik Benchmark Modu
+Sistemi arka planda 100 kare boyunca test edip gecikme yüzdeliklerini raporlar:
 ```bash
 python main.py --source demo --benchmark --max-frames 100 --no-display
 ```
 
-### 5. CLI Options Reference
+---
 
-| Flag | Default | Description |
+## ⚙️ Komut Satırı (CLI) Parametreleri
+
+| Parametre | Varsayılan | Açıklama |
 | :--- | :---: | :--- |
-| `--source` | `0` | Video source (`0` for webcam, `demo` for simulation, or path to file). |
-| `--model` | `yolov8n-seg.pt` | YOLO checkpoint (`yolov8n.pt`, `yolov8n-seg.pt`, `yolov8s-seg.pt`). |
-| `--depth-model` | `MiDaS_small` | Depth model architecture (`MiDaS_small`, `DPT_Hybrid`). |
-| `--device` | `auto` | Execution device (`auto`, `cuda`, `cpu`). |
-| `--conf` | `0.35` | Object detection confidence threshold. |
-| `--colormap` | `grayscale` | Depth colormap (`grayscale`, `inferno`, `magma`, `jet`). |
-| `--save` | `""` | Destination path to record composited MP4 video. |
-| `--snapshot` | `""` | Destination path to save a high-res still snapshot. |
-| `--no-display` | `False` | Disables GUI window (for headless cloud servers & CI/CD). |
-| `--benchmark` | `False` | Calculates and displays latency metrics summary. |
+| `--source` | `0` | Giriş kaynağı (`0`: webcam, `demo`: simülatör, veya video/görsel dosya yolu). |
+| `--model` | `yolov8n-seg.pt` | YOLO model ağırlığı (`yolov8n.pt`, `yolov8n-seg.pt`, `yolov8s-seg.pt`). |
+| `--depth-model` | `MiDaS_small` | Derinlik tahmin modeli mimarisi (`MiDaS_small`, `DPT_Hybrid`). |
+| `--device` | `auto` | Hesaplama cihazı (`auto`, `cuda`, `cpu`). |
+| `--conf` | `0.35` | Nesne tespiti güven eşik değeri (confidence threshold). |
+| `--colormap` | `grayscale` | Derinlik haritası renklendirme stili (`grayscale`, `inferno`, `magma`, `jet`). |
+| `--save` | `""` | İşlenmiş birleşik videoyu kaydetmek için dosya yolu. |
+| `--snapshot` | `""` | Tek bir yüksek çözünürlüklü ekran görüntüsü kaydetme yolu. |
+| `--no-display` | `False` | Arayüz penceresini kapatır (sunucular ve CI/CD testleri için). |
+| `--benchmark` | `False` | Otomatik performans metriklerini hesaplar ve konsola yazdırır. |
 
 ---
 
-## 🧪 Automated Testing
+## 🧪 Otomatik Birim ve Entegrasyon Testleri
 
-Run the integration and unit test suite:
+Tüm sistem bileşenlerinin hatasız çalıştığını doğrulamak için test paketini çalıştırabilirsiniz:
 ```bash
 python tests/test_pipeline.py
 ```
 
-Expected output:
+Beklenen çıktı:
 ```text
 Ran 5 tests in 6.6s
 OK
@@ -158,49 +161,49 @@ OK
 
 ---
 
-## 📂 Repository File Structure
+## 📂 Proje Dizin Yapısı
 
 ```text
 Advanced-Vision-Pipeline/
 │
 ├── src/
-│   ├── __init__.py                   # Package initialization
-│   ├── detector.py                   # YOLOv8 object detection & instance segmentation
-│   ├── depth_estimator.py            # Intel MiDaS depth estimation & spatial sampling
-│   ├── dashboard.py                  # High-performance HUD compositor (1280x720)
-│   ├── telemetry.py                  # System telemetry (FPS, CPU, RAM, VRAM, console logs)
-│   └── utils.py                      # Multi-source video stream abstraction & simulation
+│   ├── __init__.py                   # Paket başlatıcı
+│   ├── detector.py                   # YOLOv8 nesne tespiti ve poligon segmentasyonu
+│   ├── depth_estimator.py            # Intel MiDaS derinlik tahmini ve uzamsal örnekleme
+│   ├── dashboard.py                  # Yüksek performanslı 1280x720 HUD birleştirici
+│   ├── telemetry.py                  # Sistem telemetrisi (FPS, gecikme, CPU, RAM)
+│   └── utils.py                      # Çoklu kaynak akış yöneticisi ve simülatör
 │
 ├── data/
-│   ├── sample_generator.py           # Offline synthetic test data generator
-│   ├── lab_bench_sample.jpg          # Generated test image
-│   └── demo_lab_video.mp4            # Generated 10-second test video
+│   ├── sample_generator.py           # Çevrimdışı test verisi üretici
+│   ├── lab_bench_sample.jpg          # Örnek test görseli
+│   └── demo_lab_video.mp4            # Örnek test video kaydı
 │
 ├── tests/
 │   ├── __init__.py
-│   └── test_pipeline.py              # Automated unit and integration test suite
+│   └── test_pipeline.py              # Otomatik birim ve entegrasyon test paketi
 │
-├── main.py                           # CLI application entry point
-├── requirements.txt                  # Pinned Python package dependencies
-├── .gitignore                        # Git ignore rules for weights & outputs
-├── LICENSE                           # MIT License
-└── README.md                         # Comprehensive documentation
+├── main.py                           # CLI uygulaması ana giriş noktası
+├── requirements.txt                  # Python kütüphane bağımlılıkları
+├── .gitignore                        # Git dışlama kuralları
+├── LICENSE                           # MIT Açık Kaynak Lisansı
+└── README.md                         # Proje dokümantasyonu
 ```
 
 ---
 
-## 💼 CV / Resume Showcase Bullets
+## 💼 CV ve LinkedIn İçin Proje Açıklama Maddeleri
 
-You can adapt the following bullet points for your **Resume**, **CV**, and **LinkedIn Projects**:
+Aşağıdaki maddeleri özgeçmişinizin **Projeler (Projects)** veya **İş Deneyimi** alanına doğrudan ekleyebilirsiniz:
 
-* **Computer Vision Engineer | Antigravity AI Spatial Vision System**
-  * *Architected and deployed a multi-modal computer vision dashboard integrating YOLOv8 instance segmentation and Intel MiDaS monocular depth estimation in Python/PyTorch.*
-  * *Engineered a 2D-to-3D spatial sensor fusion module sampling median depth within bounding masks to classify object proximity zones (Near/Mid/Far) with sub-second inference.*
-  * *Designed a modular 1280x720 HUD telemetry interface using OpenCV, capturing real-time hardware telemetry (CPU, RAM, GPU VRAM) and streaming metrics at ~28 FPS (GPU) / ~7 FPS (CPU).*
-  * *Built full test automation and synthetic test feed generators, achieving 100% test coverage across detection, depth estimation, and rendering modules.*
+* **Bilgisayarlı Görü Mühendisi | Advanced-Vision-Pipeline**
+  * *Python ve PyTorch kullanarak YOLOv8 örnek segmentasyonu (instance segmentation) ile Intel MiDaS monoküler derinlik tahminini eşzamanlı çalıştıran çok modlu bir bilgisayarlı görü boru hattı geliştirdim.*
+  * *Tespit edilen nesnelerin segmentasyon maskeleri üzerinden medyan derinlik değerlerini filtreleyen 2B-3B uzamsal füzyon katmanı kodlayarak nesnelerin mesafesini (`Near/Mid/Far`) milisaniye seviyesinde sınıflandırdım.*
+  * *OpenCV tabanlı, anlık FPS, model bazlı çıkarım gecikmeleri ve donanım kaynaklarını (CPU/RAM/GPU) izleyen 1280x720 çözünürlüğünde 3 panelli bir gerçek zamanlı telemetri HUD paneli tasarladım.*
+  * *Kapsamlı test otomasyonu ve sentetik test verisi simülatörü geliştirerek sistemin CPU üzerinde ~7 FPS, GPU üzerinde ~28 FPS kararlı çıkarım yapmasını sağladım.*
 
 ---
 
-## 📄 License
+## 📄 Lisans
 
-This project is licensed under the [MIT License](LICENSE).
+Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
