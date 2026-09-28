@@ -1,0 +1,36 @@
+# Python Bytecode and Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Model Weights and Large Checkpoints
+*.pt
+*.pth
+*.onnx
+*.engine
+!yolov8n.pt
+
+# Output directories and recordings
+output/
+runs/
+*.mp4
+!assets/demo_lab_video.mp4
+!data/demo_lab_video.mp4
+
+# PyTorch Cache
+.cache/
+
+# Environments
+env/
+venv/
+.venv/
+ENV/
+
+# IDE & OS files
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db

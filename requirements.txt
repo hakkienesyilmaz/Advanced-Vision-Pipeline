@@ -1,0 +1,12 @@
+# Core Deep Learning Framework
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Computer Vision & Real-Time Object Detection / Segmentation
+ultralytics>=8.0.0
+opencv-python>=4.8.0
+timm>=0.9.0
+
+# Telemetry & Hardware Monitoring
+psutil>=5.9.0
+numpy>=1.24.0
