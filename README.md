@@ -11,15 +11,6 @@
 
 ---
 
-## 📸 System Overview & Live Preview
-
-![Antigravity AI Laboratory Dashboard](assets/dashboard_preview.jpg)
-
-### Composited Real-Time 3-Panel HUD Snapshot
-![Live Dashboard Output](assets/live_dashboard_snapshot.jpg)
-
----
-
 ## ⚡ Key Architectural Features
 
 1. **Object Detection & Instance Segmentation (Left Panel):**
@@ -170,11 +161,7 @@ OK
 ## 📂 Repository File Structure
 
 ```text
-CV PROJE/
-│
-├── assets/
-│   ├── dashboard_preview.jpg         # Photorealistic laboratory setting & concept
-│   └── live_dashboard_snapshot.jpg   # Real-time composited dashboard snapshot
+Advanced-Vision-Pipeline/
 │
 ├── src/
 │   ├── __init__.py                   # Package initialization
